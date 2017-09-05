@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style>
+      p{
+        display: inline-block;
+      }
+      span{
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Welcome home {{request.session.user_name}}</h1>
+    <p>Your id is {{user_id}}</p>
+      <p><a href="/secrets">Most Popular secrets</a></p>
+    <form action="/message/{{user_id}}" method="post">
+      {% csrf_token %}
+      <p>Post something new:</p>
+      <textarea name="post" rows="8" cols="80"></textarea>
+      <input type="submit" value="Post">
+    </form>
+
+    {% for message in messages %}
+    {% load humanize %}
+      {% if message.user.id == user_id %}
+        <div>
+          <p>{{ message.post }} by <span>{{ message.user.name }}</span> at {{ message.created_at|naturaltime  }} <a href="/delete/{{ message.id }}">Delete</a> </p>
+        </div>
+      {% else %}
+        <div>
+          <p>{{ message.post }} by <span>{{ message.user.name }}</span> at {{ message.created_at|naturaltime  }} <a href="/view_likes/{{ message.id }}">{{ message.post_likes.count }} likes  </a>  </p><span> ~ </span> <a href="/like/{{message.id}}/{{user_id}}">Like</a>
+        </div>
+      {%endif %}
+    {% endfor %}
+
+    <div><a href="/log_out">Log Out</a></div>
+  </body>
+</html>

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+
+    <h3>Show Likes for ~~~ {{post}}</h3>
+    {% for like in likes %}
+    <p>{{like.user.name}}</p>
+    {% endfor %}
+  </body>
+</html>
